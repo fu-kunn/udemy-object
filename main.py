@@ -21,19 +21,41 @@ ENDPOINT = os.environ['ENDPOINT']
 computervision_client = ComputerVisionClient(ENDPOINT, CognitiveServicesCredentials(KEY))
 remote_image_url = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/landmark.jpg"
 
+"""
+画像説明の取得
+"""
+# print("===== Describe an image - remote =====")
+# description_results = computervision_client.describe_image(remote_image_url )
 
-print("===== Describe an image - remote =====")
-description_results = computervision_client.describe_image(remote_image_url )
+# print("Description of remote image: ")
+# if (len(description_results.captions) == 0):
+#     print("No description detected.")
+# else:
+#     for caption in description_results.captions:
+#         print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
+# print()
+# '''
+# END - Describe an Image - remote
+# '''
+# print("End of Computer Vision quickstart.")
 
-print("Description of remote image: ")
-if (len(description_results.captions) == 0):
-    print("No description detected.")
+
+"""
+画像カテゴリの取得
+"""
+print("===== Categorize an image - remote =====")
+remote_image_features = ["categories"]
+categorize_results_remote = computervision_client.analyze_image(remote_image_url, remote_image_features )
+
+print("Categorize of remote image: ")
+if (len(categorize_results_remote.categories) == 0):
+    print("No categories detected.")
 else:
-    for caption in description_results.captions:
-        print("'{}' with confidence {:.2f}%".format(caption.text, caption.confidence * 100))
+    for category in categorize_results_remote.categories:
+        print("'{}' with confidence {:.2f}%".format(category.name, category.score * 100))
 print()
 '''
-END - Describe an Image - remote
+END - Categorize an Image - remote
 '''
 print("End of Computer Vision quickstart.")
 
