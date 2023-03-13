@@ -43,31 +43,29 @@ remote_image_url = "https://raw.githubusercontent.com/Azure-Samples/cognitive-se
 """
 画像カテゴリの取得
 """
-print("===== Categorize an image - remote =====")
-remote_image_features = ["categories"]
-categorize_results_remote = computervision_client.analyze_image(remote_image_url, remote_image_features )
+# print("===== Categorize an image - remote =====")
+# remote_image_features = ["categories"]
+# categorize_results_remote = computervision_client.analyze_image(remote_image_url, remote_image_features )
 
-print("Categorize of remote image: ")
-if (len(categorize_results_remote.categories) == 0):
-    print("No categories detected.")
-else:
-    for category in categorize_results_remote.categories:
-        print("'{}' with confidence {:.2f}%".format(category.name, category.score * 100))
-print()
-'''
-END - Categorize an Image - remote
-'''
-print("End of Computer Vision quickstart.")
+# print("Categorize of remote image: ")
+# if (len(categorize_results_remote.categories) == 0):
+#     print("No categories detected.")
+# else:
+#     for category in categorize_results_remote.categories:
+#         print("'{}' with confidence {:.2f}%".format(category.name, category.score * 100))
+# print()
+# '''
+# END - Categorize an Image - remote
+# '''
+# print("End of Computer Vision quickstart.")
 
 
 """
 画像タグの取得
 """
 # print("===== Tag an image - remote =====")
-# # Call API with remote image
 # tags_result_remote = computervision_client.tag_image(remote_image_url )
 
-# # Print results with confidence score
 # print("Tags in the remote image: ")
 # if (len(tags_result_remote.tags) == 0):
 #     print("No tags detected.")
@@ -79,3 +77,24 @@ print("End of Computer Vision quickstart.")
 # END - Tag an Image - remote
 # '''
 # print("End of Computer Vision quickstart.")
+
+"""
+物体を検出する
+"""
+print("===== Detect Object - remote =====")
+remote_image_url_objects ="https://learn.microsoft.com/ja-jp/azure/cognitive-services/computer-vision/images/tagging.png"
+detect_objects_results_remote = computervision_client.detect_objects(remote_image_url_objects )
+
+print("Detecting object in remote image: ")
+if (len(detect_objects_results_remote.objects) == 0):
+    print("No objects detected.")
+else:
+    for object in detect_objects_results_remote.objects:
+        print("object at location {}, {}, {}, {}".format( \
+        object.rectangle.x, object.rectangle.x + object.rectangle.w, \
+        object.rectangle.y, object.rectangle.y + object.rectangle.h))
+print()
+'''
+END - Tag an Image - remote
+'''
+print("End of Computer Vision quickstart.")
