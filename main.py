@@ -78,23 +78,24 @@ remote_image_url = "https://raw.githubusercontent.com/Azure-Samples/cognitive-se
 # '''
 # print("End of Computer Vision quickstart.")
 
+
+
+read_image_path = 'sample01.jpg'
+read_image = open(read_image_path, "rb")
+
+
 """
 物体を検出する
 """
-print("===== Detect Object - remote =====")
-remote_image_url_objects ="https://learn.microsoft.com/ja-jp/azure/cognitive-services/computer-vision/images/tagging.png"
-detect_objects_results_remote = computervision_client.detect_objects(remote_image_url_objects )
+print("===== Detect Object - local =====")
+detect_objects_results = computervision_client.detect_objects_in_stream(read_image)
 
-print("Detecting object in remote image: ")
-if (len(detect_objects_results_remote.objects) == 0):
+print("Detecting object in local image: ")
+if (len(detect_objects_results.objects) == 0):
     print("No objects detected.")
 else:
-    for object in detect_objects_results_remote.objects:
+    for object in detect_objects_results.objects:
         print("object at location {}, {}, {}, {}".format( \
         object.rectangle.x, object.rectangle.x + object.rectangle.w, \
         object.rectangle.y, object.rectangle.y + object.rectangle.h))
 print()
-'''
-END - Tag an Image - remote
-'''
-print("End of Computer Vision quickstart.")
