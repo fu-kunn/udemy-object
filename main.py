@@ -8,6 +8,7 @@ import os
 from PIL import Image
 import sys
 import time
+import json
 
 
 from dotenv import load_dotenv
@@ -99,9 +100,13 @@ def get_tags(filepath):
 filepath = 'sample01.jpg'
 print(get_tags(filepath))
 
-# if (len(tags_result.tags) == 0):
-#     print("No tags detected.")
-# else:
-#     for tag in tags_result.tags:
-#         print("'{}' with confidence {:.2f}%".format(tag.name, tag.confidence * 100))
-# print()
+
+
+def detect_objects(filepath):
+    read_image = open(filepath, "rb")
+    detect_objects_results = computervision_client.detect_objects_in_stream(read_image)
+    objects = detect_objects_results.objects
+    return objects
+    
+filepath = 'sample01.jpg'
+print(detect_objects(filepath))
