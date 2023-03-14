@@ -8,7 +8,6 @@ import os
 from PIL import Image
 import sys
 import time
-import json
 
 
 from dotenv import load_dotenv
@@ -20,7 +19,44 @@ KEY = os.environ['KEY_SUB']
 ENDPOINT = os.environ['ENDPOINT']
 
 computervision_client = ComputerVisionClient(ENDPOINT, CognitiveServicesCredentials(KEY))
-remote_image_url = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/landmark.jpg"
+# remote_image_url = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/landmark.jpg"
+
+read_image_path = 'sample01.jpg'
+read_image = open(read_image_path, "rb")
+
+"""
+画像タグの取得
+"""
+# read_imageの変数は何回も呼び出さないといけないのか？
+def get_tags(filepath):
+    read_image = open(filepath, "rb")
+    tags_result = computervision_client.tag_image_in_stream(read_image)
+    tags = tags_result.tags
+    tags_name = []
+    for tag in tags:
+        tags_name.append(tag.name)
+    
+    return tags_name
+
+# filepath = 'sample01.jpg'
+# print(get_tags(filepath))
+
+
+def detect_objects(filepath):
+    read_image = open(filepath, "rb")
+    detect_objects_results = computervision_client.detect_objects_in_stream(read_image)
+    objects = detect_objects_results.objects
+
+    return objects
+    
+# filepath = 'sample01.jpg'
+# print(detect_objects(filepath))
+
+import streamlit as st
+
+st.title('物体検出アプリ')
+
+
 
 """
 画像説明の取得
@@ -61,52 +97,20 @@ remote_image_url = "https://raw.githubusercontent.com/Azure-Samples/cognitive-se
 # print("End of Computer Vision quickstart.")
 
 
-
-read_image_path = 'sample01.jpg'
-read_image = open(read_image_path, "rb")
-
-
 """
 物体を検出する
 """
-print("===== Detect Object - local =====")
-detect_objects_results = computervision_client.detect_objects_in_stream(read_image)
+# print("===== Detect Object - local =====")
+# detect_objects_results = computervision_client.detect_objects_in_stream(read_image)
 
-print("Detecting object in local image: ")
-if (len(detect_objects_results.objects) == 0):
-    print("No objects detected.")
-else:
-    for object in detect_objects_results.objects:
-        print("object at location {}, {}, {}, {}".format( \
-        object.rectangle.x, object.rectangle.x + object.rectangle.w, \
-        object.rectangle.y, object.rectangle.y + object.rectangle.h))
-print()
-
-
-"""
-画像タグの取得
-"""
-# read_imageの変数は何回も呼び出さないといけないのか？
-def get_tags(filepath):
-    read_image = open(filepath, "rb")
-    tags_result = computervision_client.tag_image_in_stream(read_image)
-    tags = tags_result.tags
-    tags_name = []
-    for tag in tags:
-        tags_name.append(tag.name)
-    
-    return tags_name
-
-filepath = 'sample01.jpg'
-print(get_tags(filepath))
+# print("Detecting object in local image: ")
+# if (len(detect_objects_results.objects) == 0):
+#     print("No objects detected.")
+# else:
+#     for object in detect_objects_results.objects:
+#         print("object at location {}, {}, {}, {}".format( \
+#         object.rectangle.x, object.rectangle.x + object.rectangle.w, \
+#         object.rectangle.y, object.rectangle.y + object.rectangle.h))
+# print()
 
 
-
-def detect_objects(filepath):
-    read_image = open(filepath, "rb")
-    detect_objects_results = computervision_client.detect_objects_in_stream(read_image)
-    objects = detect_objects_results.objects
-    return objects
-    
-filepath = 'sample01.jpg'
-print(detect_objects(filepath))
