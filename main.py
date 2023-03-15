@@ -58,7 +58,16 @@ uploaded_file = st.file_uploader('Choose an image...', type=['jpg', 'png'])
 if uploaded_file is not None:
     # PIL(pythonの画像ライブラリ)でImageクラスを使っている
     img = Image.open(uploaded_file)
+    
+    # """
+    # file_uploaderではパスを取得できない
+    # detect_objectsには引数にfilepathが指定されているためパスが必要
+    # """
+    img_path = f'img/{uploaded_file.name}'
+    img.save(img_path)
     st.image(img)
+
+    
     # **で囲むことで太文字にできる
     st.markdown('**認識されたコンテンツタグ**')
     st.markdown('> apple, tree, building, green')
