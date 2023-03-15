@@ -51,6 +51,10 @@ def detect_objects(filepath):
 # print(detect_objects(filepath))
 
 import streamlit as st
+# 画像にテキストを入れる
+# テキストのフォントを変える
+from PIL import ImageDraw
+from PIL import ImageFont
 
 st.title('物体検出アプリ')
 
@@ -65,9 +69,22 @@ if uploaded_file is not None:
     # """
     img_path = f'img/{uploaded_file.name}'
     img.save(img_path)
-    st.image(img)
+    objects = detect_objects(img_path)
 
+    # 描画
+    draw = ImageDraw.Draw(img)
+    for object in objects:
+        x = object.rectangle.x
+        y = object.rectangle.y
+        w = object.rectangle.w
+        h = object.rectangle.h
+        caption = object.object_property
+
+        draw.rectangle([(x, y), (x+w, y+h)], fill=None, outline='green', width=5)
+
+    st.image(img)
     
+
     # **で囲むことで太文字にできる
     st.markdown('**認識されたコンテンツタグ**')
     st.markdown('> apple, tree, building, green')
