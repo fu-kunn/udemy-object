@@ -24,9 +24,7 @@ computervision_client = ComputerVisionClient(ENDPOINT, CognitiveServicesCredenti
 read_image_path = 'sample01.jpg'
 read_image = open(read_image_path, "rb")
 
-"""
-画像タグの取得
-"""
+# 画像タグの取得
 # read_imageの変数は何回も呼び出さないといけないのか？
 def get_tags(filepath):
     read_image = open(filepath, "rb")
@@ -56,11 +54,18 @@ import streamlit as st
 
 st.title('物体検出アプリ')
 
+uploaded_file = st.file_uploader('Choose an image...', type=['jpg', 'png'])
+if uploaded_file is not None:
+    # PIL(pythonの画像ライブラリ)でImageクラスを使っている
+    img = Image.open(uploaded_file)
+    st.image(img)
+    # **で囲むことで太文字にできる
+    st.markdown('**認識されたコンテンツタグ**')
+    st.markdown('> apple, tree, building, green')
 
 
-"""
-画像説明の取得
-"""
+
+# 画像説明の取得
 # print("===== Describe an image - remote =====")
 # description_results = computervision_client.describe_image(remote_image_url )
 
@@ -77,9 +82,9 @@ st.title('物体検出アプリ')
 # print("End of Computer Vision quickstart.")
 
 
-"""
-画像カテゴリの取得
-"""
+# """
+# 画像カテゴリの取得
+# """
 # print("===== Categorize an image - remote =====")
 # remote_image_features = ["categories"]
 # categorize_results_remote = computervision_client.analyze_image(remote_image_url, remote_image_features )
@@ -97,9 +102,9 @@ st.title('物体検出アプリ')
 # print("End of Computer Vision quickstart.")
 
 
-"""
-物体を検出する
-"""
+# """
+# 物体を検出する
+# """
 # print("===== Detect Object - local =====")
 # detect_objects_results = computervision_client.detect_objects_in_stream(read_image)
 
